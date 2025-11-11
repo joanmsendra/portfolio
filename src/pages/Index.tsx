@@ -1,3 +1,4 @@
+import { Header } from "@/components/Header";
 import { Hero3D } from "@/components/Hero3D";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
@@ -8,6 +9,7 @@ import { Footer } from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <Hero3D />
       <About />
       <Skills />

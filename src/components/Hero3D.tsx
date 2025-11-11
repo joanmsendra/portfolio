@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
+import { OrbitControls, Sphere, MeshDistortMaterial, Box } from "@react-three/drei";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
@@ -28,9 +28,34 @@ const AnimatedSphere = () => {
   );
 };
 
+const FloatingCube = () => {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.5;
+      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.15;
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.25;
+      meshRef.current.rotation.z = state.clock.getElapsedTime() * 0.1;
+    }
+  });
+
+  return (
+    <Box ref={meshRef} args={[1.2, 1.2, 1.2]} position={[3, 0, 0]}>
+      <meshStandardMaterial
+        color="hsl(262, 83%, 58%)"
+        metalness={0.9}
+        roughness={0.1}
+        emissive="hsl(262, 83%, 58%)"
+        emissiveIntensity={0.3}
+      />
+    </Box>
+  );
+};
+
 export const Hero3D = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
@@ -38,6 +63,7 @@ export const Hero3D = () => {
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} color="hsl(262, 83%, 58%)" />
           <AnimatedSphere />
+          <FloatingCube />
           <OrbitControls enableZoom={false} enablePan={false} />
         </Canvas>
       </div>
