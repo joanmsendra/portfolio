@@ -31,10 +31,6 @@ export const Skills = () => {
 
   return (
     <section id="skills" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
-      {/* Background Blobs */}
-      <div className="blob blob-1 right-0 left-auto opacity-20" />
-      <div className="blob blob-2 left-0 right-auto opacity-20" />
-
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

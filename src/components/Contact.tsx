@@ -28,10 +28,6 @@ export const Contact = () => {
 
   return (
     <section id="contact" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
-      {/* Background Blobs */}
-      <div className="blob blob-1 opacity-20" />
-      <div className="blob blob-2 opacity-20" />
-
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

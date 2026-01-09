@@ -87,7 +87,7 @@ const GLASS_WRAPPER_CONFIG = {
   
   // Efecto de blur (backdrop-blur)
   blur: {
-    intensity: "md",      // Intensidad: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" - Optimized to md
+    intensity: "xl",      // Intensidad: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
   },
   
   // Bordes redondeados
@@ -120,30 +120,21 @@ export const Hero3D = () => {
   const [dimensions, setDimensions] = useState({ width: 640, height: 360 }); // Start smaller
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | undefined;
-    
+    // Initial set with half resolution for performance
+    setDimensions({
+      width: window.innerWidth / 2,
+      height: window.innerHeight / 2
+    });
+
     const handleResize = () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        setDimensions({
-          width: window.innerWidth / 2,
-          height: window.innerHeight / 2
-        });
-      }, 200); // Debounce por 200ms
+      setDimensions({
+        width: window.innerWidth / 2,
+        height: window.innerHeight / 2
+      });
     };
 
-    // Initial set and event listener
-    handleResize(); 
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -208,7 +199,7 @@ export const Hero3D = () => {
               }}
             >
               <motion.h1
-                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-xl will-change-transform"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.2, duration: 1.0, ease: "easeOut" }}
@@ -217,7 +208,7 @@ export const Hero3D = () => {
               </motion.h1>
               
               <motion.p
-                className="text-xl md:text-2xl lg:text-3xl text-white/90 font-medium mb-8 drop-shadow-md will-change-transform"
+                className="text-xl md:text-2xl lg:text-3xl text-white/90 font-medium mb-8 drop-shadow-md"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.4, duration: 1.0, ease: "easeOut" }}
@@ -243,13 +234,13 @@ export const Hero3D = () => {
               >
                 <a
                   href="#projects"
-                  className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold smooth-transition hover:scale-105 glow-effect shadow-lg will-change-transform"
+                  className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold smooth-transition hover:scale-105 glow-effect shadow-lg"
                 >
                   Ver Proyectos
                 </a>
                 <a
                   href="#contact"
-                  className="px-8 py-4 bg-card/80 backdrop-blur-sm border-2 border-primary text-white rounded-lg font-semibold smooth-transition hover:scale-105 hover:bg-primary/10 shadow-lg will-change-transform"
+                  className="px-8 py-4 bg-card/80 backdrop-blur-sm border-2 border-primary text-white rounded-lg font-semibold smooth-transition hover:scale-105 hover:bg-primary/10 shadow-lg"
                 >
                   Contacto
                 </a>
@@ -259,7 +250,7 @@ export const Hero3D = () => {
 
           {/* TV Retro 3D a la derecha - PROTAGONISTA */}
           <motion.div 
-            className="relative h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2 will-change-transform"
+            className="relative h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2"
             initial={{ opacity: 0, x: 50 }}
             animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 1.5, delay: 1.0, ease: "easeOut" }}
@@ -275,9 +266,7 @@ export const Hero3D = () => {
                 depth: true,
                 alpha: true
               }}
-              performance={{ min: 0.5,
-                stg: 0,
-              }}
+              performance={{ min: 0.5 }}
               camera={{ 
                 position: [0, 0, 4],
                 fov: 45,
