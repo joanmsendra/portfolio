@@ -287,17 +287,19 @@ export const Hero3D = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-        initial={{ opacity: 0, y: -20 }}
-        animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-        transition={{ delay: 2.5, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-      >
-        <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center p-2 bg-black/30 backdrop-blur-sm">
-          <div className="w-1 h-3 bg-primary rounded-full animate-bounce" />
-        </div>
-      </motion.div>
+      {/* Scroll Indicator - Hidden on mobile */}
+      {!isMobile && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          initial={{ opacity: 0, y: -20 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ delay: 2.5, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+        >
+          <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center p-2 bg-black/30 backdrop-blur-sm">
+            <div className="w-1 h-3 bg-primary rounded-full animate-bounce" />
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 };

@@ -5,6 +5,7 @@ import React from "react";
 
 export const Projects = React.memo(() => {
   const { t } = useLanguage();
+  const isMobile = window.innerWidth < 768;
 
   const projects = [
     {
@@ -34,8 +35,8 @@ export const Projects = React.memo(() => {
     <section id="projects" className="min-h-screen flex items-center py-20 px-6 relative overflow-hidden will-change-transform">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16 will-change-transform"
@@ -52,9 +53,9 @@ export const Projects = React.memo(() => {
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.02 }}
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+              whileHover={isMobile ? undefined : { scale: 1.02 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.2, duration: 0.6 }}
               className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 group relative overflow-hidden will-change-transform"
@@ -85,8 +86,8 @@ export const Projects = React.memo(() => {
         </div>
         
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-16 text-center will-change-transform"
