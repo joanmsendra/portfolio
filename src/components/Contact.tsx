@@ -36,7 +36,7 @@ export const Contact = React.memo(() => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16 will-change-transform"
         >
@@ -53,7 +53,7 @@ export const Contact = React.memo(() => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8 }}
             className="will-change-transform"
           >
@@ -69,7 +69,7 @@ export const Contact = React.memo(() => {
                     rel="noopener noreferrer"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, margin: "-20px" }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
                     className="flex items-center gap-4 p-4 bg-muted rounded-xl smooth-transition hover:bg-primary/10 hover:scale-105 group will-change-transform"
                   >
@@ -115,7 +115,7 @@ export const Contact = React.memo(() => {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8 }}
             className="card-gradient p-8 rounded-2xl border border-primary/20 will-change-transform"
           >

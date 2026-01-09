@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
 import { Code2, Globe, Database, Cloud } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 import React from "react";
 
 export const Skills = React.memo(() => {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
 
   const skillCategories = [
     {
@@ -39,9 +37,9 @@ export const Skills = React.memo(() => {
     <section id="skills" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden will-change-transform">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16 will-change-transform"
         >
@@ -57,9 +55,9 @@ export const Skills = React.memo(() => {
           {skillCategories.map((category, index) => (
             <motion.div
               key={index}
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-              whileHover={isMobile ? undefined : { scale: 1.05 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 group will-change-transform"
@@ -74,8 +72,8 @@ export const Skills = React.memo(() => {
                 {category.skills.map((skill, skillIndex) => (
                   <motion.span
                     key={skillIndex}
-                    initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                    whileInView={isMobile ? undefined : { opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-20px" }}
                     transition={{ delay: index * 0.15 + skillIndex * 0.05, duration: 0.3 }}
                     className="px-3 py-1 bg-muted rounded-full text-sm text-foreground smooth-transition hover:bg-primary hover:text-primary-foreground cursor-default"
@@ -88,10 +86,11 @@ export const Skills = React.memo(() => {
           ))}
         </div>
 
+        {/* Additional Technical Skills */}
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.6, duration: 0.8 }}
           className="mt-16 text-center will-change-transform"
         >
@@ -100,8 +99,8 @@ export const Skills = React.memo(() => {
             {["Git", "GitHub", "SQL", "MongoDB", "REST APIs", "Responsive Design", "Webpack", "Vite"].map((tech, index) => (
               <motion.span
                 key={index}
-                initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                whileInView={isMobile ? undefined : { opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-20px" }}
                 transition={{ delay: 0.8 + index * 0.05, duration: 0.3 }}
                 className="px-5 py-2 bg-card border border-primary/30 rounded-lg text-sm font-medium smooth-transition hover:border-primary hover:bg-primary/10"
