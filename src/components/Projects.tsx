@@ -20,8 +20,11 @@ export const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 px-6 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="projects" className="min-h-screen flex items-center py-20 px-6 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="blob blob-1 bottom-0 top-auto opacity-30" />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,9 +46,10 @@ export const Projects = () => {
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.2, duration: 0.6 }}
-              className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 hover:scale-[1.02] group relative overflow-hidden"
+              className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 group relative overflow-hidden will-change-transform"
             >
               {/* Background Gradient Effect */}
               <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 smooth-transition`} />

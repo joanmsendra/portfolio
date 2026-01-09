@@ -26,8 +26,12 @@ export const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 px-6 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="min-h-screen flex items-center py-20 px-6 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="blob blob-1" />
+      <div className="blob blob-2" />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

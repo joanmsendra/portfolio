@@ -30,7 +30,7 @@ export const Header = () => {
       className={`fixed top-0 left-0 right-0 z-50 smooth-transition ${
         isScrolled
           ? "bg-card/80 backdrop-blur-lg border-b border-border shadow-lg"
-          : "bg-transparent"
+          : "bg-gradient-to-b from-black/70 to-transparent backdrop-blur-[2px]"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4">
@@ -46,7 +46,9 @@ export const Header = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-muted-foreground hover:text-foreground smooth-transition relative group"
+                className={`text-sm font-medium smooth-transition relative group ${
+                  isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white"
+                }`}
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary smooth-transition group-hover:w-full" />

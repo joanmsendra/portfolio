@@ -27,8 +27,12 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="blob blob-1 opacity-20" />
+      <div className="blob blob-2 opacity-20" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +41,7 @@ export const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Hablemos de <span className="gradient-text">tu Proyecto</span>
+            Necesitas mi <span className="gradient-text">Contacto?</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Estoy disponible para oportunidades de desarrollo y colaboraciones
@@ -62,6 +66,7 @@ export const Contact = () => {
                     href={contact.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Visitar mi perfil de ${contact.label}`}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}

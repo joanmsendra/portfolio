@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
-import { Code2, Palette, Film, Music2 } from "lucide-react";
+import { Code2, Palette, Film, Server } from "lucide-react";
 
 export const Skills = () => {
   const skillCategories = [
     {
       icon: <Code2 className="w-8 h-8" />,
-      title: "Programación",
-      skills: ["JavaScript", "Java", "Python", "C/C++", "HTML/CSS", "React", "Node.js"],
+      title: "Frontend Dev",
+      skills: ["JavaScript", "TypeScript", "HTML/CSS", "React", "Next.js", "Tailwind CSS"],
       color: "from-tech-cyan to-tech-blue",
+    },
+    {
+      icon: <Server className="w-8 h-8" />,
+      title: "Backend Dev",
+      skills: ["Node.js", "Express.js", "Python (Flask/Django)", "Java (Spring Boot)", "SQL", "MongoDB", "REST APIs"],
+      color: "from-primary to-tech-purple",
     },
     {
       icon: <Palette className="w-8 h-8" />,
@@ -21,17 +27,15 @@ export const Skills = () => {
       skills: ["Premiere Pro", "After Effects", "Da Vinci Resolve", "Motion Graphics"],
       color: "from-tech-blue to-primary",
     },
-    {
-      icon: <Music2 className="w-8 h-8" />,
-      title: "Producción Musical",
-      skills: ["DJ Profesional", "Mezcla", "Masterización", "Producción de Eventos"],
-      color: "from-secondary to-tech-purple",
-    },
   ];
 
   return (
-    <section id="skills" className="py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="skills" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="blob blob-1 right-0 left-auto opacity-20" />
+      <div className="blob blob-2 left-0 right-auto opacity-20" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,9 +57,10 @@ export const Skills = () => {
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
-              className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 hover:scale-105 group"
+              whileHover={{ scale: 1.05 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="card-gradient p-8 rounded-2xl border border-primary/20 smooth-transition hover:border-primary/50 group will-change-transform"
             >
               <div className={`bg-gradient-to-br ${category.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:animate-pulse-glow smooth-transition`}>
                 <div className="text-white">{category.icon}</div>
