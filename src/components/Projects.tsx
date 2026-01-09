@@ -36,7 +36,7 @@ export const Projects = React.memo(() => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16 will-change-transform"
         >
@@ -87,7 +87,7 @@ export const Projects = React.memo(() => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-16 text-center will-change-transform"
         >
