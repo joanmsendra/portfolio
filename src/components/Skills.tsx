@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Code2, Globe, Database, Cloud } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import React from "react";
 
-export const Skills = () => {
+export const Skills = React.memo(() => {
   const { t } = useLanguage();
 
   const skillCategories = [
@@ -33,14 +34,14 @@ export const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
+    <section id="skills" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden will-change-transform">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-16 will-change-transform"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             {t.skills.title}
@@ -73,7 +74,7 @@ export const Skills = () => {
                     key={skillIndex}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-20px" }}
                     transition={{ delay: index * 0.15 + skillIndex * 0.05, duration: 0.3 }}
                     className="px-3 py-1 bg-muted rounded-full text-sm text-foreground smooth-transition hover:bg-primary hover:text-primary-foreground cursor-default"
                   >
@@ -89,9 +90,9 @@ export const Skills = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-16 text-center"
+          className="mt-16 text-center will-change-transform"
         >
           <h3 className="text-2xl font-bold mb-6">{t.skills.additional}</h3>
           <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
@@ -100,7 +101,7 @@ export const Skills = () => {
                 key={index}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-20px" }}
                 transition={{ delay: 0.8 + index * 0.05, duration: 0.3 }}
                 className="px-5 py-2 bg-card border border-primary/30 rounded-lg text-sm font-medium smooth-transition hover:border-primary hover:bg-primary/10"
               >
@@ -112,4 +113,6 @@ export const Skills = () => {
       </div>
     </section>
   );
-};
+});
+
+Skills.displayName = "Skills";

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, MapPin, Phone } from "lucide-react";
+import { Mail, Linkedin, MapPin, Phone } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import React from "react";
 
-export const Contact = () => {
+export const Contact = React.memo(() => {
   const { t } = useLanguage();
 
   const contactLinks = [
@@ -30,14 +31,14 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden">
+    <section id="contact" className="min-h-screen flex items-center py-20 px-6 bg-tech-darker/50 relative overflow-hidden will-change-transform">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-16 will-change-transform"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             {t.contact.title}
@@ -52,8 +53,9 @@ export const Contact = () => {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
+            className="will-change-transform"
           >
             <div className="card-gradient p-8 rounded-2xl border border-primary/20 mb-8">
               <h3 className="text-2xl font-bold mb-6">{t.contact.infoTitle}</h3>
@@ -67,9 +69,9 @@ export const Contact = () => {
                     rel="noopener noreferrer"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-50px" }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
-                    className="flex items-center gap-4 p-4 bg-muted rounded-xl smooth-transition hover:bg-primary/10 hover:scale-105 group"
+                    className="flex items-center gap-4 p-4 bg-muted rounded-xl smooth-transition hover:bg-primary/10 hover:scale-105 group will-change-transform"
                   >
                     <div className={`bg-gradient-to-br ${contact.gradient} w-12 h-12 rounded-lg flex items-center justify-center glow-effect`}>
                       <div className="text-white">{contact.icon}</div>
@@ -93,9 +95,9 @@ export const Contact = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="card-gradient p-6 rounded-xl border border-primary/20"
+              className="card-gradient p-6 rounded-xl border border-primary/20 will-change-transform"
             >
               <h4 className="font-bold mb-3">{t.contact.whyTitle}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
@@ -113,9 +115,9 @@ export const Contact = () => {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            className="card-gradient p-8 rounded-2xl border border-primary/20"
+            className="card-gradient p-8 rounded-2xl border border-primary/20 will-change-transform"
           >
             <h3 className="text-2xl font-bold mb-6">{t.contact.formTitle}</h3>
             
@@ -168,4 +170,6 @@ export const Contact = () => {
       </div>
     </section>
   );
-};
+});
+
+Contact.displayName = "Contact";

@@ -1,10 +1,11 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { RetroTV } from "./RetroTV";
 import { GrainGradient } from '@paper-design/shaders-react';
 import { useLanguage } from "@/context/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Controles simples sin auto-reset
 const CameraControls = () => {
@@ -14,6 +15,7 @@ const CameraControls = () => {
       enablePan={false}
       autoRotate={false}
       target={[0, 0, 0]}
+      makeDefault
     />
   );
 };
@@ -25,16 +27,13 @@ const Loader = () => {
   return (
     <div className="loader-wrapper">
       <div className="loader-text">
-        {/* Línea 1: Joan */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.1em' }}>
           {joanLetters.map((letter, index) => (
             <span key={`joan-${index}`} className="loader-letter" style={{ animationDelay: `${index * 0.1}s` }}>
               {letter}
             </span>
           ))}
-          {/* Spacer between words */}
           <span style={{ width: '0.5em' }}></span>
-          {/* Línea 2: Medina */}
           {medinaLetters.map((letter, index) => (
             <span key={`medina-${index}`} className="loader-letter" style={{ animationDelay: `${(index + joanLetters.length) * 0.1}s` }}>
               {letter}
@@ -49,98 +48,94 @@ const Loader = () => {
 
 // ==================== CONFIGURACIÓN DE ILUMINACIÓN 3D ====================
 const LIGHTING_CONFIG = {
-  // Luz ambiente (ilumina todo uniformemente)
   ambient: {
-    intensity: 1,      // Intensidad base (0-5)
-    color: "#ffffff",    // Color de la luz ambiente
+    intensity: 1,
+    color: "#ffffff",
   },
-  
-  // Luz direccional (simula sol/dirección principal)
   directional: {
-    intensity: 1,        // Intensidad (0-5)
-    position: [5, 5, 5] as [number, number, number], // Posición [X, Y, Z]
-    color: "#ffffff",    // Color de la luz direccional
+    intensity: 1,
+    position: [5, 5, 5] as [number, number, number],
+    color: "#ffffff",
   },
-  
-  // Luz puntual 1 (accent cyan)
   pointLight1: {
-    intensity: 1.5,      // Intensidad (0-5)
-    position: [-5, 3, 5] as [number, number, number], // Posición [X, Y, Z]
-    color: "#00d4ff",    // Color cyan
+    intensity: 1.5,
+    position: [-5, 3, 5] as [number, number, number],
+    color: "#00d4ff",
   },
-  
-  // Luz puntual 2 (accent magenta)
   pointLight2: {
-    intensity: 1,        // Intensidad (0-5)
-    position: [5, -3, 3] as [number, number, number], // Posición [X, Y, Z]
-    color: "#ff00ff",    // Color magenta
+    intensity: 1,
+    position: [5, -3, 3] as [number, number, number],
+    color: "#ff00ff",
   },
 };
-// =========================================================================
 
 // ==================== CONFIGURACIÓN LIQUID GLASS WRAPPER ====================
 const GLASS_WRAPPER_CONFIG = {
-  // Fondo del wrapper (opacidad y color)
   background: {
-    opacity: 0.6,        // Opacidad del fondo (0-1) - 0.6 = 60% negro
-    color: "black",      // Color base (black, white, o color hex)
+    opacity: 0.6,
+    color: "black",
   },
-  
-  // Efecto de blur (backdrop-blur)
   blur: {
-    intensity: "xl",      // Intensidad: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
+    intensity: "xl",
   },
-  
-  // Bordes redondeados
   borderRadius: {
-    size: "3xl",         // Tamaño: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
+    size: "3xl",
   },
-  
-  // Padding interno
   padding: {
-    size: 8,             // Padding en unidades Tailwind (8 = 2rem = 32px)
+    size: 8,
   },
-  
-  // Borde del wrapper
   border: {
-    width: 1,            // Ancho del borde (1 = 1px)
-    opacity: 0.1,        // Opacidad del borde (0-1)
-    color: "white",      // Color del borde
+    width: 1,
+    opacity: 0.1,
+    color: "white",
   },
-  
-  // Sombra
   shadow: {
-    size: "2xl",         // Tamaño: "sm" | "md" | "lg" | "xl" | "2xl"
-    opacity: 1,          // Intensidad de la sombra (0-1)
+    size: "2xl",
+    opacity: 1,
   },
 };
-// =============================================================================
 
 export const Hero3D = () => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: 640, height: 360 }); // Start smaller
+  const [dpr, setDpr] = useState(1);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.1 }); // Se activa cuando se ve al menos un 10%
+  
+  const [dimensions, setDimensions] = useState({ 
+    width: typeof window !== 'undefined' ? window.innerWidth / 2 : 640, 
+    height: typeof window !== 'undefined' ? window.innerHeight / 2 : 360 
+  });
 
   useEffect(() => {
-    // Initial set with half resolution for performance
-    setDimensions({
-      width: window.innerWidth / 2,
-      height: window.innerHeight / 2
-    });
-
+    let timeoutId: NodeJS.Timeout;
+    
     const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth / 2,
-        height: window.innerHeight / 2
-      });
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setDimensions({
+          width: window.innerWidth / 2,
+          height: window.innerHeight / 2
+        });
+      }, 200);
     };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    
+    const failsafe = setTimeout(() => {
+      if (!isLoaded) setIsLoaded(true);
+    }, 4000);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+      clearTimeout(failsafe);
+    };
+  }, [isLoaded]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       
       {/* Loading Overlay */}
       <motion.div
@@ -153,12 +148,13 @@ export const Hero3D = () => {
         {!isLoaded && <Loader />}
       </motion.div>
 
-      {/* Gradient Background - Optimized Resolution */}
+      {/* Gradient Background - Keep mounted to avoid reloading, but stop rendering when not in view */}
       <motion.div 
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 will-change-transform"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 2.0, delay: 0.5 }}
+        style={{ display: isInView ? 'block' : 'none' }}
       >
         <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, transform: 'scale(2)', transformOrigin: 'top left' }}>
             <GrainGradient
@@ -175,7 +171,7 @@ export const Hero3D = () => {
         </div>
       </motion.div>
 
-      {/* Gradient Overlay - Improved for contrast */}
+      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background z-10 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10 pointer-events-none" />
 
@@ -189,19 +185,21 @@ export const Hero3D = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="relative z-30"
+              className="relative z-30 will-change-transform"
               style={{
-                backgroundColor: `${GLASS_WRAPPER_CONFIG.background.color}${Math.round(GLASS_WRAPPER_CONFIG.background.opacity * 255).toString(16).padStart(2, '0')}`,
-                backdropFilter: `blur(${GLASS_WRAPPER_CONFIG.blur.intensity === 'sm' ? '4px' : GLASS_WRAPPER_CONFIG.blur.intensity === 'md' ? '8px' : GLASS_WRAPPER_CONFIG.blur.intensity === 'lg' ? '12px' : GLASS_WRAPPER_CONFIG.blur.intensity === 'xl' ? '16px' : GLASS_WRAPPER_CONFIG.blur.intensity === '2xl' ? '24px' : '40px'})`,
-                borderRadius: GLASS_WRAPPER_CONFIG.borderRadius.size === 'sm' ? '0.25rem' : GLASS_WRAPPER_CONFIG.borderRadius.size === 'md' ? '0.375rem' : GLASS_WRAPPER_CONFIG.borderRadius.size === 'lg' ? '0.5rem' : GLASS_WRAPPER_CONFIG.borderRadius.size === 'xl' ? '0.75rem' : GLASS_WRAPPER_CONFIG.borderRadius.size === '2xl' ? '1rem' : '1.5rem',
+                backgroundColor: isMobile 
+                  ? `${GLASS_WRAPPER_CONFIG.background.color}${Math.round(0.3 * 255).toString(16).padStart(2, '0')}`
+                  : `${GLASS_WRAPPER_CONFIG.background.color}${Math.round(GLASS_WRAPPER_CONFIG.background.opacity * 255).toString(16).padStart(2, '0')}`,
+                backdropFilter: `blur(${isMobile ? '8px' : '16px'})`,
+                borderRadius: '1.5rem',
                 padding: `${GLASS_WRAPPER_CONFIG.padding.size * 0.25}rem`,
-                borderWidth: `${GLASS_WRAPPER_CONFIG.border.width}px`,
-                borderColor: `${GLASS_WRAPPER_CONFIG.border.color}${Math.round(GLASS_WRAPPER_CONFIG.border.opacity * 255).toString(16).padStart(2, '0')}`,
-                boxShadow: GLASS_WRAPPER_CONFIG.shadow.size === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : GLASS_WRAPPER_CONFIG.shadow.size === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : GLASS_WRAPPER_CONFIG.shadow.size === 'lg' ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : GLASS_WRAPPER_CONFIG.shadow.size === 'xl' ? '0 20px 25px -5px rgba(0, 0, 0, 0.1)' : '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                borderWidth: '1px',
+                borderColor: `white${Math.round(0.1 * 255).toString(16).padStart(2, '0')}`,
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
               }}
             >
               <motion.h1
-                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-xl"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-xl will-change-transform"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.2, duration: 1.0, ease: "easeOut" }}
@@ -210,7 +208,7 @@ export const Hero3D = () => {
               </motion.h1>
               
               <motion.p
-                className="text-xl md:text-2xl lg:text-3xl text-white/90 font-medium mb-8 drop-shadow-md"
+                className="text-xl md:text-2xl lg:text-3xl text-white/90 font-medium mb-8 drop-shadow-md will-change-transform"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.4, duration: 1.0, ease: "easeOut" }}
@@ -219,7 +217,7 @@ export const Hero3D = () => {
               </motion.p>
 
               <motion.p
-                className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-12 drop-shadow-sm"
+                className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-12 drop-shadow-sm will-change-transform"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.6, duration: 1.0, ease: "easeOut" }}
@@ -228,7 +226,7 @@ export const Hero3D = () => {
               </motion.p>
 
               <motion.div
-                className="flex flex-wrap gap-4 justify-center lg:justify-start"
+                className="flex flex-wrap gap-4 justify-center lg:justify-start will-change-transform"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.8, duration: 1.0, ease: "easeOut" }}
@@ -249,20 +247,21 @@ export const Hero3D = () => {
             </motion.div>
           </div>
 
-          {/* TV Retro 3D a la derecha - PROTAGONISTA */}
+          {/* TV Retro 3D - Keep mounted, control frameloop for performance */}
           <motion.div 
-            className="relative h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2"
+            className="relative h-[400px] md:h-[500px] lg:h-[600px] order-1 lg:order-2 will-change-transform"
             initial={{ opacity: 0, x: 50 }}
             animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 1.5, delay: 1.0, ease: "easeOut" }}
             style={{ overflow: 'visible' }}
           >
             <Canvas
-              style={{ width: '150%', marginLeft: '-25%' }} 
-              dpr={[1, 1]} // Optimization: Lowest safe DPI
+              style={{ width: '150%', marginLeft: '-25%', pointerEvents: isInView ? 'auto' : 'none' }} 
+              dpr={dpr}
+              frameloop={isInView ? 'always' : 'never'}
               gl={{ 
                 powerPreference: "high-performance", 
-                antialias: false, // Disable antialias for performance
+                antialias: false,
                 stencil: false,
                 depth: true,
                 alpha: true
@@ -275,28 +274,12 @@ export const Hero3D = () => {
                 far: 1000
               }}
             >
-              <ambientLight 
-                intensity={LIGHTING_CONFIG.ambient.intensity} 
-                color={LIGHTING_CONFIG.ambient.color}
-              />
-              <directionalLight 
-                position={LIGHTING_CONFIG.directional.position} 
-                intensity={LIGHTING_CONFIG.directional.intensity}
-                color={LIGHTING_CONFIG.directional.color}
-              />
-              <pointLight 
-                position={LIGHTING_CONFIG.pointLight1.position} 
-                intensity={LIGHTING_CONFIG.pointLight1.intensity} 
-                color={LIGHTING_CONFIG.pointLight1.color}
-              />
-              <pointLight 
-                position={LIGHTING_CONFIG.pointLight2.position} 
-                intensity={LIGHTING_CONFIG.pointLight2.intensity} 
-                color={LIGHTING_CONFIG.pointLight2.color}
-              />
-              
+              <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.5)} />
+              <ambientLight intensity={LIGHTING_CONFIG.ambient.intensity} color={LIGHTING_CONFIG.ambient.color} />
+              <directionalLight position={LIGHTING_CONFIG.directional.position} intensity={LIGHTING_CONFIG.directional.intensity} color={LIGHTING_CONFIG.directional.color} />
+              <pointLight position={LIGHTING_CONFIG.pointLight1.position} intensity={LIGHTING_CONFIG.pointLight1.intensity} color={LIGHTING_CONFIG.pointLight1.color} />
+              <pointLight position={LIGHTING_CONFIG.pointLight2.position} intensity={LIGHTING_CONFIG.pointLight2.intensity} color={LIGHTING_CONFIG.pointLight2.color} />
               <RetroTV onLoad={() => setIsLoaded(true)} />
-              
               <CameraControls />
             </Canvas>
           </motion.div>

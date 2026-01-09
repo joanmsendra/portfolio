@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Smartphone, Terminal, Globe, Gamepad2 } from "lucide-react";
+import { Smartphone, Terminal, Gamepad2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import React from "react";
 
-export const Projects = () => {
+export const Projects = React.memo(() => {
   const { t } = useLanguage();
 
   const projects = [
@@ -21,13 +22,6 @@ export const Projects = () => {
       gradient: "from-primary to-tech-purple",
     },
     {
-      title: t.projects.portfolioTitle,
-      description: t.projects.portfolioDesc,
-      icon: <Globe className="w-8 h-8" />,
-      tech: ["React", "Three.js", "WebGL", "Tailwind"],
-      gradient: "from-tech-purple to-secondary",
-    },
-    {
       title: t.projects.gameTitle,
       description: t.projects.gameDesc,
       icon: <Gamepad2 className="w-8 h-8" />,
@@ -37,14 +31,14 @@ export const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="min-h-screen flex items-center py-20 px-6 relative overflow-hidden">
+    <section id="projects" className="min-h-screen flex items-center py-20 px-6 relative overflow-hidden will-change-transform">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-16 will-change-transform"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             {t.projects.title}
@@ -54,7 +48,7 @@ export const Projects = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -93,9 +87,9 @@ export const Projects = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-16 text-center"
+          className="mt-16 text-center will-change-transform"
         >
           <div className="card-gradient p-8 rounded-2xl border border-primary/20 max-w-3xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">{t.projects.more}</h3>
@@ -110,4 +104,6 @@ export const Projects = () => {
       </div>
     </section>
   );
-};
+});
+
+Projects.displayName = "Projects";
