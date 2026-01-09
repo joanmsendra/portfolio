@@ -1,27 +1,30 @@
 import { motion } from "framer-motion";
-import { MapPin, GraduationCap, Code, Music } from "lucide-react";
+import { MapPin, GraduationCap, Code, Globe } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const About = () => {
+  const { t } = useLanguage();
+
   const facts = [
     {
       icon: <MapPin className="w-6 h-6" />,
-      title: "Ubicación",
-      description: "De Reus, estudiando en Barcelona",
+      title: t.about.locationTitle,
+      description: t.about.locationDesc,
     },
     {
       icon: <GraduationCap className="w-6 h-6" />,
-      title: "Estudios",
-      description: "Técnicas de Aplicaciones de Software - La Salle Bonanova",
+      title: t.about.studiesTitle,
+      description: t.about.studiesDesc,
     },
     {
       icon: <Code className="w-6 h-6" />,
-      title: "Pasión",
-      description: "Programación, diseño y tecnología creativa",
+      title: t.about.profileTitle,
+      description: t.about.profileDesc,
     },
     {
-      icon: <Music className="w-6 h-6" />,
-      title: "Extra",
-      description: "DJ profesional para financiar mis estudios",
+      icon: <Globe className="w-6 h-6" />,
+      title: t.about.langTitle,
+      description: t.about.langDesc,
     },
   ];
 
@@ -36,10 +39,10 @@ export const About = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Sobre <span className="gradient-text">Mí</span>
+            {t.about.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Desarrollador apasionado por crear experiencias digitales únicas
+            {t.about.subtitle}
           </p>
         </motion.div>
 
@@ -51,18 +54,13 @@ export const About = () => {
             transition={{ duration: 0.8 }}
           >
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Soy un desarrollador de software en formación con una pasión por la tecnología y la creatividad. 
-              Mi enfoque combina habilidades técnicas sólidas con un ojo artístico, lo que me permite crear 
-              soluciones innovadoras y visualmente atractivas.
+              {t.about.bio1}
             </p>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Además de la programación, tengo experiencia en diseño gráfico, edición de video y producción 
-              musical como DJ. Esta combinación única me permite aportar una perspectiva creativa a cada 
-              proyecto técnico que desarrollo.
+              {t.about.bio2}
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              He creado proyectos ambiciosos como aplicaciones completas para equipos de fútbol y videojuegos, 
-              demostrando mi capacidad para llevar ideas desde el concepto hasta la implementación completa.
+              {t.about.bio3}
             </p>
           </motion.div>
 

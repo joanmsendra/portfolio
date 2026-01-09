@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { RetroTV } from "./RetroTV";
 import { GrainGradient } from '@paper-design/shaders-react';
+import { useLanguage } from "@/context/LanguageContext";
 
 // Controles simples sin auto-reset
 const CameraControls = () => {
@@ -116,6 +117,7 @@ const GLASS_WRAPPER_CONFIG = {
 // =============================================================================
 
 export const Hero3D = () => {
+  const { t } = useLanguage();
   const [isLoaded, setIsLoaded] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 640, height: 360 }); // Start smaller
 
@@ -204,7 +206,7 @@ export const Hero3D = () => {
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.2, duration: 1.0, ease: "easeOut" }}
               >
-                <span className="gradient-text" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))' }}>Joan Medina</span>
+                <span className="gradient-text" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))' }}>{t.hero.title}</span>
               </motion.h1>
               
               <motion.p
@@ -213,8 +215,7 @@ export const Hero3D = () => {
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.4, duration: 1.0, ease: "easeOut" }}
               >
-                Software Developer & 
-                Creative Technologist
+                {t.hero.role}
               </motion.p>
 
               <motion.p
@@ -223,7 +224,7 @@ export const Hero3D = () => {
                 animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 1.6, duration: 1.0, ease: "easeOut" }}
               >
-                 Multimedia Creator | 3D Artist | DJ
+                 {t.hero.subrole}
               </motion.p>
 
               <motion.div
@@ -236,13 +237,13 @@ export const Hero3D = () => {
                   href="#projects"
                   className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold smooth-transition hover:scale-105 glow-effect shadow-lg"
                 >
-                  Ver Proyectos
+                  {t.hero.ctaProject}
                 </a>
                 <a
                   href="#contact"
                   className="px-8 py-4 bg-card/80 backdrop-blur-sm border-2 border-primary text-white rounded-lg font-semibold smooth-transition hover:scale-105 hover:bg-primary/10 shadow-lg"
                 >
-                  Contacto
+                  {t.hero.ctaContact}
                 </a>
               </motion.div>
             </motion.div>

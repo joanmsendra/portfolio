@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const Header = () => {
+  const { language, setLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -15,12 +17,18 @@ export const Header = () => {
   }, []);
 
   const navLinks = [
-    { name: "Inicio", href: "#home" },
-    { name: "Sobre Mí", href: "#about" },
-    { name: "Habilidades", href: "#skills" },
-    { name: "Proyectos", href: "#projects" },
-    { name: "Contacto", href: "#contact" },
+    { name: t.header.home, href: "#home" },
+    { name: t.header.about, href: "#about" },
+    { name: t.header.skills, href: "#skills" },
+    { name: t.header.projects, href: "#projects" },
+    { name: t.header.contact, href: "#contact" },
   ];
+
+  const cycleLanguage = () => {
+    if (language === 'en') setLanguage('es');
+    else if (language === 'es') setLanguage('ca');
+    else setLanguage('en');
+  };
 
   return (
     <motion.header
@@ -54,15 +62,37 @@ export const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary smooth-transition group-hover:w-full" />
               </a>
             ))}
+
+            {/* Language Switcher */}
+            <button 
+              onClick={cycleLanguage}
+              className={`flex items-center gap-2 px-3 py-1 rounded-full border smooth-transition text-sm font-medium ${
+                isScrolled 
+                  ? "bg-primary/10 border-primary/30 text-primary hover:bg-primary/20" 
+                  : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+              }`}
+            >
+              <Globe size={16} />
+              {language.toUpperCase()}
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-foreground hover:text-primary smooth-transition"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="md:hidden flex items-center gap-4">
+            <button 
+              onClick={cycleLanguage}
+              className="text-foreground hover:text-primary smooth-transition font-bold text-sm flex items-center gap-1"
+            >
+              {language.toUpperCase()}
+            </button>
+            
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-foreground hover:text-primary smooth-transition"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}

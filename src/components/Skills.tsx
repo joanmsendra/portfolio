@@ -1,30 +1,33 @@
 import { motion } from "framer-motion";
-import { Code2, Palette, Film, Server } from "lucide-react";
+import { Code2, Globe, Database, Cloud } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const Skills = () => {
+  const { t } = useLanguage();
+
   const skillCategories = [
     {
       icon: <Code2 className="w-8 h-8" />,
-      title: "Frontend Dev",
-      skills: ["JavaScript", "TypeScript", "HTML/CSS", "React", "Next.js", "Tailwind CSS"],
+      title: t.skills.core,
+      skills: ["JavaScript (ES6+)", "TypeScript", "C", "C++", "Python", "Java"],
       color: "from-tech-cyan to-tech-blue",
     },
     {
-      icon: <Server className="w-8 h-8" />,
-      title: "Backend Dev",
-      skills: ["Node.js", "Express.js", "Python (Flask/Django)", "Java (Spring Boot)", "SQL", "MongoDB", "REST APIs"],
+      icon: <Globe className="w-8 h-8" />,
+      title: t.skills.mobile,
+      skills: ["React Native", "React.js", "Three.js/WebGL", "Unity 3D", "HTML5/CSS3", "Redux"],
       color: "from-primary to-tech-purple",
     },
     {
-      icon: <Palette className="w-8 h-8" />,
-      title: "Diseño Gráfico",
-      skills: ["Photoshop", "Illustrator", "Lightroom", "Figma", "UI/UX Design"],
+      icon: <Database className="w-8 h-8" />,
+      title: t.skills.backend,
+      skills: ["Node.js", "MySQL", "MongoDB", "REST APIs", "Flask"],
       color: "from-tech-purple to-secondary",
     },
     {
-      icon: <Film className="w-8 h-8" />,
-      title: "Edición de Video",
-      skills: ["Premiere Pro", "After Effects", "Da Vinci Resolve", "Motion Graphics"],
+      icon: <Cloud className="w-8 h-8" />,
+      title: t.skills.cloud,
+      skills: ["AWS Cloud Practitioner", "Docker", "Git/GitHub", "Cisco CCNA", "Linux"],
       color: "from-tech-blue to-primary",
     },
   ];
@@ -40,10 +43,10 @@ export const Skills = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Habilidades <span className="gradient-text">Técnicas</span>
+            {t.skills.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Un conjunto diverso de competencias que combinan tecnología y creatividad
+            {t.skills.subtitle}
           </p>
         </motion.div>
 
@@ -90,7 +93,7 @@ export const Skills = () => {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="mt-16 text-center"
         >
-          <h3 className="text-2xl font-bold mb-6">Tecnologías Adicionales</h3>
+          <h3 className="text-2xl font-bold mb-6">{t.skills.additional}</h3>
           <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
             {["Git", "GitHub", "SQL", "MongoDB", "REST APIs", "Responsive Design", "Webpack", "Vite"].map((tech, index) => (
               <motion.span

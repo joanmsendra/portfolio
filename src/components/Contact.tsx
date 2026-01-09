@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { Mail, Linkedin, Github, MapPin, Phone } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const Contact = () => {
+  const { t } = useLanguage();
+
   const contactLinks = [
     {
       icon: <Mail className="w-6 h-6" />,
-      label: "Email",
-      value: "joan.medina@example.com",
-      href: "mailto:joan.medina@example.com",
+      label: t.contact.email,
+      value: "jmedinasendra@gmail.com",
+      href: "mailto:jmedinasendra@gmail.com",
       gradient: "from-tech-cyan to-tech-blue",
     },
     {
@@ -18,10 +21,10 @@ export const Contact = () => {
       gradient: "from-tech-blue to-primary",
     },
     {
-      icon: <Github className="w-6 h-6" />,
-      label: "GitHub",
-      value: "github.com/joanmedina",
-      href: "https://github.com",
+      icon: <Phone className="w-6 h-6" />,
+      label: t.contact.phone,
+      value: "+34 622 381 443",
+      href: "tel:+34622381443",
       gradient: "from-tech-purple to-secondary",
     },
   ];
@@ -37,10 +40,10 @@ export const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Necesitas mi <span className="gradient-text">Contacto?</span>
+            {t.contact.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Estoy disponible para oportunidades de desarrollo y colaboraciones
+            {t.contact.subtitle}
           </p>
         </motion.div>
 
@@ -53,7 +56,7 @@ export const Contact = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="card-gradient p-8 rounded-2xl border border-primary/20 mb-8">
-              <h3 className="text-2xl font-bold mb-6">Información de Contacto</h3>
+              <h3 className="text-2xl font-bold mb-6">{t.contact.infoTitle}</h3>
               
               <div className="space-y-6">
                 {contactLinks.map((contact, index) => (
@@ -62,7 +65,6 @@ export const Contact = () => {
                     href={contact.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Visitar mi perfil de ${contact.label}`}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -83,11 +85,7 @@ export const Contact = () => {
               <div className="mt-8 pt-8 border-t border-border">
                 <div className="flex items-center gap-3 text-muted-foreground mb-3">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span>Reus, Barcelona - España</span>
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <Phone className="w-5 h-5 text-primary" />
-                  <span>Disponible para llamadas y videollamadas</span>
+                  <span>{t.contact.location}</span>
                 </div>
               </div>
             </div>
@@ -99,24 +97,14 @@ export const Contact = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="card-gradient p-6 rounded-xl border border-primary/20"
             >
-              <h4 className="font-bold mb-3">¿Por qué trabajar conmigo?</h4>
+              <h4 className="font-bold mb-3">{t.contact.whyTitle}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">▸</span>
-                  <span>Enfoque creativo combinado con habilidades técnicas sólidas</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">▸</span>
-                  <span>Experiencia en proyectos completos desde el concepto hasta la implementación</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">▸</span>
-                  <span>Pasión por aprender nuevas tecnologías y metodologías</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">▸</span>
-                  <span>Capacidad para trabajar tanto en frontend como en backend</span>
-                </li>
+                {[t.contact.why1, t.contact.why2, t.contact.why3, t.contact.why4].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-primary mt-1">▸</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           </motion.div>
@@ -129,24 +117,24 @@ export const Contact = () => {
             transition={{ duration: 0.8 }}
             className="card-gradient p-8 rounded-2xl border border-primary/20"
           >
-            <h3 className="text-2xl font-bold mb-6">Envíame un Mensaje</h3>
+            <h3 className="text-2xl font-bold mb-6">{t.contact.formTitle}</h3>
             
             <form className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Nombre
+                  {t.contact.name}
                 </label>
                 <input
                   type="text"
                   id="name"
                   className="w-full px-4 py-3 bg-muted rounded-lg border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 smooth-transition"
-                  placeholder="Tu nombre"
+                  placeholder={t.contact.name}
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email
+                  {t.contact.email}
                 </label>
                 <input
                   type="email"
@@ -158,13 +146,13 @@ export const Contact = () => {
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Mensaje
+                  {t.contact.message}
                 </label>
                 <textarea
                   id="message"
                   rows={5}
                   className="w-full px-4 py-3 bg-muted rounded-lg border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 smooth-transition resize-none"
-                  placeholder="Cuéntame sobre tu proyecto..."
+                  placeholder={t.contact.message}
                 />
               </div>
 
@@ -172,7 +160,7 @@ export const Contact = () => {
                 type="submit"
                 className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-lg font-semibold smooth-transition hover:scale-105 glow-effect"
               >
-                Enviar Mensaje
+                {t.contact.send}
               </button>
             </form>
           </motion.div>
